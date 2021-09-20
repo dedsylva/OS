@@ -29,6 +29,7 @@ bdb_large_sector_count:     dd 0
 ebr_drive_number:           db 0
                             db 0
 ebr_signature:              db 29h
+ebr_volume_id:		    db 12h, 34h, 56h, 78h
 ebr_volume_label:           db 'DEDS OS    '    ; 11 bytes padded with spaces
 ebr_system_id:              db 'FAT12   '       ; 8 bytes padded with spaces
 
@@ -50,6 +51,7 @@ puts:
   ; push the registers that will be modified to the stack
   push si
   push ax
+  push bx
 
 ; enters the main loop
 .loop:
@@ -67,7 +69,7 @@ puts:
 .done:
   ; pop registers previously pushed in reversed order
   ; returns
-
+  pop bx
   pop ax
   pop si
   ret
@@ -180,6 +182,7 @@ disk_read:
   push dx
   push di
 
+  push cx
   call lba_to_chs                             ; compute CHS from LBA
   pop ax                                      ; ax = cx in the stack
 
