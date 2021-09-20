@@ -5,5 +5,10 @@
 - Divide in Bootloader and Kernel
 
 ## Issues with Windows 10
-- Makefile isn't working, you need to set up manually the commands (like creating the image and binary files)
-- Ubuntu with WSL doesn't run qemu very well, needs to be via windows cmd.
+- Makefile works with Ubuntu WSL (Windows Subsystem for Linux)
+- Qemu works only in windows 10
+- Bosch doesn't work (needs to be running in windows, since we run qemu there)
+
+## Credits
+[nanobyte](https://www.youtube.com/channel/UCSPIuWADJIMIf9Erf--XAsA)
+[playlist-tutorial](https://www.youtube.com/watch?v=9t-SPC7Tczc&list=PLFjM7v6KGMpiH2G-kT781ByCNC_0pKpPN&ab_channel=nanobyte)
