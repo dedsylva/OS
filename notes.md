@@ -94,6 +94,16 @@ SPR -> sectors per track
 * head = (LBA / spr) % heads
 * cylinder = (LBA / spr) / heads 
 
+## FAT (12) File System
+Just like disks have sectors, FAT uses clusters. They are divided in:
+* Reserved
+* File Allocation Tables
+* Root Directory
+* Data
+The cluster number gives the location in the data region and starts from 2. Converting to a sector number we have the equation:
+-> lba = data_region_begin + (cluster-2) * sectors_per_cluster 
+
+
 
 ## Documentation
 * https://www.eecg.utoronto.ca/~amza/www.mindsec.com/files/x86regs.html
