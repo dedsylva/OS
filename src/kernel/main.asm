@@ -1,4 +1,4 @@
-org 0x7C00
+org 0x0 
 bits 16
 
 %define ENDL 0x0D, 0x0A     ; a simple macro to print end of line
@@ -7,6 +7,16 @@ bits 16
 start:
   jmp main
 
+
+main:
+  ; print hello world message
+  mov si, msg_hello
+  call puts         ; calls puts function
+
+
+.halt:
+	cli
+	hlt
 
 ; Prints characters untill it finds the NULL character
 ; Params: (pointer to string in ds:si)
@@ -38,28 +48,4 @@ puts:
   ret
 
 
-main:
-  ; setup data segments
-  mov ax, 0         ; can't write to ds/es directly
-  mov ds, ax
-  mov es, ax
-
-  ; setup stack
-  mov ss, ax
-  mov sp, 0x7C00    ; stack grows downwards (to smaller addresses)
-
-  ; print hello world message
-  mov si, msg_hello
-  call puts         ; calls puts function
-
-  hlt
-
-.hlt:
-  jmp .hlt
-
-msg_hello: db 'Hello world!', ENDL, 0
-
-
-
-times 510-($-$$) db 0
-dw 0AA55h
+msg_hello: db 'Hello world from KERNEL!', ENDL, 0

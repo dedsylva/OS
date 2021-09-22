@@ -41,7 +41,220 @@ ebr_system_id:              db 'FAT12   '       ; 8 bytes padded with spaces
 
 ; Stating that main is where the program starts
 start:
-  jmp main
+ ; setup data segments
+  mov ax, 0         ; can't write to ds/es directly
+  mov ds, ax
+  mov es, ax
+
+  ; setup stack
+  mov ss, ax
+  mov sp, 0x7C00    ; stack grows downwards (to smaller addresses)
+
+	; making sure the code segment is zero, somme BIOS may initiate bootloader with 0x7C00
+	push es
+	push word .after
+	retf
+
+.after:
+  
+  ; read something from floppy disk
+  ; BIOS should set DL to drive number
+  mov [ebr_drive_number], dl
+
+  ; show loading image
+	mov si, msg_loading 
+  call puts         													; calls puts function
+
+	; read drive parameters (sectors per track and head count),
+	; instead of relying on data on formatted disk (BIOS is safer)
+	push es
+	mov ah, 08h
+	int 13h 				 														; caling interrupt 13h BIOS function
+	jc floppy_error
+	pop es
+
+	and cl, 0x3F																; remove top 2 bits
+	xor ch, ch
+	mov [bdb_sectors_per_track], cx							; head count
+	
+	inc dh
+	mov [bdb_heads], dh
+
+	; read FAT root directory
+	mov ax, [bdb_sectors_per_fat]								; compute LBA of root = reserver + fat * sec_per_fat
+	mov bl, [bdb_fat_count]
+	xor bh, bh
+	mul bx																			; ax = (fats * sectors_per_fat)
+	add ax, [bdb_reserved_sectors]							; ax = LBA of root directory
+	push ax
+
+
+	; compute size of root directory = (32 * number_of_entries) / bytes_per_sector
+	mov ax, [bdb_dir_entries_count]
+	shl ax, 5																		; ax *= 32
+	xor dx, dx 																	; dx = 0
+	div word [bdb_bytes_per_sector]							; number of sectors we need to read
+
+	test dx, dx																	; if dx != 0, add 1
+	jz .root_dir_after
+	inc ax
+
+																							; division remainder != 0, add 1
+																							; this means we have a sector only partially
+																							; filled dwith entries
+
+.root_dir_after:
+	; read root directory
+	mov cl, al																	; cl = number of sectors to read = size of root
+	pop ax																			; ax = LBA of directory
+	mov dl, [ebr_drive_number]									; dl = drive number (saved it previously)
+	mov bx, buffer															; es:bx = buffer
+	call disk_read
+
+	; search for kernel.bin in the directory entries
+	xor bx, bx
+	mov di, buffer															; name of file is the first entry
+
+.search_kernel:
+	mov si, file_kernel_bin
+	mov cx, 11																	; lentgh of name of the file (11 bytes)
+	push di
+	repe cmpsb																	; compsb: compare two bytes (we can compare string)
+																							; one byte in ds:si and the other in es:di
+																							; si and di are incremented (direction flag = 0)
+																							; or decremented (direction flat = 1)
+
+																							; repe: repeat while equal
+																							; it will repeat the compare instruction as long
+																							; as they are equal up to cx times, while decreasing
+																							; cx (which is 11 in this case)
+
+	pop di 																			; restore di to its original value
+	je .found_kernel														; jump if condition is met
+	
+	add di, 32																	; if it didnt found, moves to the next directory
+																							; entry (which has 32 bytes of length)
+
+	inc bx																			; increment how many entries we checked
+	cmp bx, [bdb_dir_entries_count]							; check if we checked all of them already
+	jl .search_kernel														; if we didn't finish, goes back in loop
+
+	; kernel not found, we checked every entry
+	jmp kernel_not_found_error
+
+
+
+.found_kernel:
+
+	; di should have the address to the entry
+	mov ax, [di + 26]														; first logical cluster field (offset 26)
+	mov [kernel_cluster], ax
+
+	; read file allocation tablel (load FAT from disk into memory)
+	mov ax, [bdb_reserved_sectors]
+	mov bx, buffer
+	mov cl, [bdb_sectors_per_fat]
+	mov dl, [ebr_drive_number]
+	call disk_read
+
+	; the area with the most memory we can put the file content is
+	; between 0x7E00 and 0x7FFFF (called the Conventional Memory)
+	; REMEMBER: WE ARE CURRENTLY WORKING WITH ONLY 16-BITS view mode ,
+	; this means we can only access up to 1MB of memory (THE LOW MEMORY REGION)
+		
+	; read the file annd the process chain (read kernel)
+	mov bx, KERNEL_LOAD_SEGMENT
+	mov es, bx
+	mov bx, KERNEL_LOAD_OFFSET
+
+.load_kernel_loop:
+	; Read next cluster
+	mov ax, [kernel_cluster]
+	add ax, 31																	; frst_clus = (clu-2)*sectors_per_clu + start_sector
+																							; start_sector = reserv + fat + root size
+
+	mov cl, 1
+	mov dl, [ebr_drive_number]
+	call disk_read
+
+	add bx, [bdb_bytes_per_sector]
+
+	; compute location of next cluster
+	mov ax, [kernel_cluster]
+	mov cx, 3
+	mul cx
+	mov cx, 2
+	div cx																			; ax = index of entry in FAT, dx = cluster mod 2
+
+	mov si, buffer
+	add si, ax
+	mov ax, [ds:si]															; read entry from FAT table at index ax
+
+	or dx, dx
+	jz .even
+
+.odd:
+	shr ax, 4
+	jmp .next_cluster_after
+
+.even:
+	and ax, 0x0FFF
+
+.next_cluster_after:
+	cmp ax, 0x0FF8															; check if reache EOF
+	jae .read_finish
+
+	mov [kernel_cluster], ax
+	jmp .load_kernel_loop
+
+.read_finish:
+
+	; jump to our kernel
+	mov dl, [ebr_drive_number]									; boot device in dl
+	
+	mov ax, KERNEL_LOAD_SEGMENT									; set segment registers
+	mov ds, ax
+	mov es, ax
+
+	jmp KERNEL_LOAD_SEGMENT:KERNEL_LOAD_OFFSET
+
+	jmp wait_key_and_reboot											; should never happen
+
+
+
+
+	
+
+
+
+  cli               													; disable interrupts, this way the CPU 
+  hlt																					; can't get out of 'halt' state
+
+
+;
+; Error Handler
+;
+
+
+floppy_error:
+  mov si, msg_read_failed
+  call puts
+  jmp wait_key_and_reboot
+
+kernel_not_found_error:
+	mov si, msg_kernel_not_found
+	call puts
+	jmp wait_key_and_reboot
+
+
+wait_key_and_reboot:
+  mov ah, 0
+  int 16h            ; waits for keypress
+  jmp 0FFFFh:0       ; jumps to beginning of BIOS, which will reboot the system
+
+.halt:
+  cli                ; disable interrupts, this way the CPU can't get out of 'halt' state
+  hlt
 
 
 ; Prints characters untill it finds the NULL character
@@ -75,51 +288,9 @@ puts:
   ret
 
 
-main:
-  ; setup data segments
-  mov ax, 0         ; can't write to ds/es directly
-  mov ds, ax
-  mov es, ax
-
-  ; setup stack
-  mov ss, ax
-  mov sp, 0x7C00    ; stack grows downwards (to smaller addresses)
-
-  
-  ; read something from floppy disk
-  ; BIOS should set DL to drive number
-  mov [ebr_drive_number], dl
-
-  mov ax, 1         ; LBA=1, second sector from disk
-  mov cl, 1         ; 1 sector to read
-  mov bx, 0x7E00    ; data should be after the bootloader
-  call disk_read
 
 
-  ; print hello world message
-  mov si, msg_hello
-  call puts         ; calls puts function
-  cli               ; disable interrupts, this way the CPU can't get out of 'halt' state
-  hlt
 
-;
-; Error Handler
-;
-
-
-floppy_error:
-  mov si, msg_read_failed
-  call puts
-  jmp wait_key_and_reboot
-
-wait_key_and_reboot:
-  mov ah, 0
-  int 16h            ; waits for keypress
-  jmp 0FFFFh:0       ; jumps to beginning of BIOS, which will reboot the system
-
-.halt:
-  cli                ; disable interrupts, this way the CPU can't get out of 'halt' state
-  hlt
 ;
 ; Disk Routines
 ;
@@ -234,8 +405,16 @@ disk_reset:
                                               ; top of the stack
   
 
-msg_hello:          db 'Hello world!', ENDL, 0
-msg_read_failed:    db 'Read from disk failed!', ENDL, 0
+msg_loading:          db 'Loading...', ENDL, 0
+msg_read_failed:   		db 'Read from disk failed!', ENDL, 0
+msg_kernel_not_found:	db 'KERNEL.BIN file not found!', ENDL, 0
+file_kernel_bin:			db 'KERNEL  BIN'
+kernel_cluster:				dw 0
+
+KERNEL_LOAD_SEGMENT		equ 0x2000							; the equ directive doesn't allocate memory
+KERNEL_LOAD_OFFSET		equ 0										; for the constants (equivalent to #define in c)
 
 times 510-($-$$) db 0
 dw 0AA55h
+
+buffer:

@@ -91,6 +91,7 @@ bool readRootDirectory(FILE* disk) {
 // Returns pointer to the corresponding Directory Entry
 DirectoryEntry* findFile(const char* name) {
   for (uint32_t i = 0; i < g_BootSector.DirEntryCount; i++) {
+		// checks if the name has 11 bytes, if it does then returns that pointer
     if (memcmp(name, g_RootDirectory[i].Name, 11) == 0)
       return &g_RootDirectory[i];
     }
@@ -145,7 +146,7 @@ int main(int argc, char** argv){
   }
 
   if (!readRootDirectory(disk)) {
-    fprintf(stderr, "Could not read FAT!\n");
+    fprintf(stderr, "Could not read Root Directory!\n");
     free(g_Fat);
     free(g_RootDirectory);
     return -4;
