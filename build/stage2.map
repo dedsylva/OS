@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 30 2021 00:24:57 (32-bit)
 Copyright (c) 2002-2021 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       21/10/01 23:41:59
+Created on:       21/10/02 14:42:31
 Executable Image: /home/deds/projects/OS/build/stage2.bin
 creating a RAW Binary Image executable
 
@@ -13,7 +13,7 @@ creating a RAW Binary Image executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          00000022             00000000
+DGROUP                          0000009e             00000014
 
 
 
@@ -25,10 +25,10 @@ Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
 _ENTRY                 CODE           AUTO           00000000        00000013
-_TEXT                  CODE           AUTO           00000013        0000000f
-CONST                  DATA           DGROUP         00000022        00000000
-CONST2                 DATA           DGROUP         00000022        00000000
-_DATA                  DATA           DGROUP         00000022        00000000
+_TEXT                  CODE           AUTO           00000013        0000008b
+CONST                  DATA           DGROUP         0000009e        00000014
+CONST2                 DATA           DGROUP         000000b2        00000000
+_DATA                  DATA           DGROUP         000000b2        00000000
 
 
                         +----------------+
@@ -41,10 +41,15 @@ _DATA                  DATA           DGROUP         00000022        00000000
 Address        Symbol
 =======        ======
 
+Module: /home/deds/projects/OS/build/stage2/asm/x86.obj(x86.asm)
+00000013       _x86_Video_WriteCharTeletype
 Module: /home/deds/projects/OS/build/stage2/asm/main.obj(main.asm)
 00000000       entry
+Module: /home/deds/projects/OS/build/stage2/c/stdio.obj(/home/deds/projects/OS/src/bootloader/stage2/stdio.c)
+00000026+      putc_
+0000004d       puts_
 Module: /home/deds/projects/OS/build/stage2/c/main.obj(/home/deds/projects/OS/src/bootloader/stage2/main.c)
-00000013       _cstart_
+00000084       _cstart_
 
 
                         +---------------------+
@@ -57,12 +62,18 @@ c = initialized communal data
 Module          Segment               Class           Address         Size
 ======          =======               =====           =======         ====
 
+x86.asm         _TEXT                 CODE           00000013         00000013
 main.asm        _ENTRY                CODE           00000000         00000013
+/home/deds/projects/OS/src/bootloader/stage2/stdio.c
+                _TEXT                 CODE           00000026         0000005e
+                CONST                 DATA           0000009e         00000000
+                CONST2                DATA           000000b2         00000000
+                _DATA                 DATA           000000b2         00000000
 /home/deds/projects/OS/src/bootloader/stage2/main.c
-                _TEXT                 CODE           00000013         0000000f
-                CONST                 DATA           00000022         00000000
-                CONST2                DATA           00000022         00000000
-                _DATA                 DATA           00000022         00000000
+                _TEXT                 CODE           00000084         0000001a
+                CONST                 DATA           0000009e         00000014
+                CONST2                DATA           000000b2         00000000
+                _DATA                 DATA           000000b2         00000000
 Warning! W1014: stack segment not found
 
 
@@ -71,6 +82,6 @@ Warning! W1014: stack segment not found
                         +-----------------------+
 
 Stack size:  0200 (512.)
-Memory size:  0022 (34.)
+Memory size:  00b2 (178.)
 Entry point address: 00000000
-Link time: 00:00.20
+Link time: 00:00.10

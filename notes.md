@@ -115,6 +115,24 @@ We are going to tackle the first three, since the last one we already have it wi
 
 So we are going to move from 16-bit real mode to 64-bit protected mode, by adding a <b>second stage to the bootloader</b>. To do that we'll move from assembly to c, but unfortunately we won't be able to run gcc, because we are in 16-bit real mode (although we will transition, some of the code will still be in 16-bit). So we'll use a compiler that was pretty popular and good in the 80s, early 90s: Open-Watcom.
 
+### CDECL calling function convention
+In order to guarantee compatibility across softwares, there are some conventions that you must follow, so that the compiler knows how to act when calling a function. For the 16-bit and 32-bit one common is the CDECL, which is the one we'll use. The rules are:
+
+#### Arguments
+* Passes through stack
+* Pushed from right to left
+* Calller removes parameters from stack
+
+### Return
+* Integers, memory addresses (pointers) should be returned at the EAX register
+* Floating points should be returned at the ST0 register
+
+### Registers
+* EAX, ECX, EDX saved by caller
+* All others are saved by callee (must be restored to original values before returning)
+
+### Naming
+* C functions must start with a _
 
 ## Documentation
 * https://www.eecg.utoronto.ca/~amza/www.mindsec.com/files/x86regs.html
