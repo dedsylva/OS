@@ -104,6 +104,17 @@ The cluster number gives the location in the data region and starts from 2. Conv
 -> lba = data_region_begin + (cluster-2) * sectors_per_cluster 
 
 
+## Bootloader in C (goodbye assemebly)
+Bootloader has three properties:
+* Collects information about system 
+* Puts system in state expected by kernel
+* Loads and executes Kernel
+
+## Compilers
+We are going to tackle the first three, since the last one we already have it with our limited 512 bytes boot sector. 
+
+So we are going to move from 16-bit real mode to 64-bit protected mode, by adding a <b>second stage to the bootloader</b>. To do that we'll move from assembly to c, but unfortunately we won't be able to run gcc, because we are in 16-bit real mode (although we will transition, some of the code will still be in 16-bit). So we'll use a compiler that was pretty popular and good in the 80s, early 90s: Open-Watcom.
+
 
 ## Documentation
 * https://www.eecg.utoronto.ca/~amza/www.mindsec.com/files/x86regs.html
