@@ -5,6 +5,7 @@
 * Divide in Bootloader and Kernel [x]
 * Create Bootloader [x]
 * Create Kernel []
+* Create Printf []
 
 ## Issues with Windows 10
 - Makefile works with Ubuntu WSL (Windows Subsystem for Linux)

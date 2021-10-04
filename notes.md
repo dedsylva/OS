@@ -134,5 +134,24 @@ In order to guarantee compatibility across softwares, there are some conventions
 ### Naming
 * C functions must start with a _
 
+
+### Printf
+In order to implement a simple version of printf, the first thing we need to be concerned is with the number of parameters. The advantage of the stack growing downward is that we always know where the first argument is ([bp + 4]), so we simply count + 2 until the size has been reach. In order to know the size of the arguments, we need to parse them. Once this is sorted out, we can simply write a pointer that goes along each parameter, as shown below.
+
+```c
+void my_printf(const char* fmt, ...) {
+	int* argp = (int*)&fmt; 							 // pointer pointing to format string
+	argp += sizeof(fmt) / sizeof(int);		 // we need to divide because fmt is a vector
+}
+```
+
+One thing to remember is that <b>the stack pointer is always aligned to the bit sized of the mode being used by the processor</b>. This means that in 16-bit real mode any argument smaller than 16-bits(char or unsigned char) will be promoted to 16-bit. The same is true for 32-bit and 64-bit mode.
+
+
+#### State Machine Code Logic
+The complete explanation can be found [here](https://www.youtube.com/watch?v=dG8PV6xqm4s&ab_channel=nanobyte&t=427)
+
+![StateMachine](https://github.com/dedsylva/OS/tree/main/images/state_machine.png)
+
 ## Documentation
 * https://www.eecg.utoronto.ca/~amza/www.mindsec.com/files/x86regs.html
