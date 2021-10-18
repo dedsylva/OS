@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Sep 30 2021 00:24:57 (32-bit)
 Copyright (c) 2002-2021 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       21/10/04 16:46:53
+Created on:       21/10/18 16:46:21
 Executable Image: /home/deds/projects/OS/build/stage2.bin
 creating a RAW Binary Image executable
 
@@ -13,7 +13,7 @@ creating a RAW Binary Image executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          000005f8             00000090
+DGROUP                          00001a58             00000168
 
 
 
@@ -25,10 +25,11 @@ Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
 _ENTRY                 CODE           AUTO           00000000        00000013
-_TEXT                  CODE           AUTO           00000013        000005e5
-CONST                  DATA           DGROUP         000005f8        0000007d
-CONST2                 DATA           DGROUP         00000676        00000011
-_DATA                  DATA           DGROUP         00000688        00000000
+_TEXT                  CODE           AUTO           00000013        00001a44
+CONST                  DATA           DGROUP         00001a58        00000145
+CONST2                 DATA           DGROUP         00001b9e        00000011
+_DATA                  DATA           DGROUP         00001bb0        00000008
+_BSS                   BSS            DGROUP         00001bb8        00000008
 
 
                         +----------------+
@@ -42,18 +43,55 @@ Address        Symbol
 =======        ======
 
 Module: /home/deds/projects/OS/build/stage2/asm/x86.obj(x86.asm)
-00000013       _x86_div64_32
-00000041       _x86_Video_WriteCharTeletype
+00000013       __U4D
+00000037       __U4M
+00000051       _x86_div64_32
+0000007f       _x86_Video_WriteCharTeletype
+00000092       _x86_Disk_Reset
+000000a7       _x86_Disk_Read
+000000de       _x86_Disk_GetDriveParams
 Module: /home/deds/projects/OS/build/stage2/asm/main.obj(main.asm)
 00000000       entry
+Module: /home/deds/projects/OS/build/stage2/c/ctype.obj(/home/deds/projects/OS/src/bootloader/stage2/ctype.c)
+00000122+      islower_
+00000160       toupper_
+Module: /home/deds/projects/OS/build/stage2/c/fat.obj(/home/deds/projects/OS/src/bootloader/stage2/fat.c)
+000001a8+      FAT_ReadBootSector_
+000001dc+      FAT_ReadFat_
+00000220       FAT_Initialize_
+00000474+      FAT_ClusterToLba_
+000004ca+      FAT_OpenEntry_
+00000694+      FAT_NextCluster_
+0000071d       FAT_Read_
+00000a81       FAT_ReadEntry_
+00000ada       FAT_Close_
+00000b58+      FAT_FindFile_
+00000c92       FAT_Open_
+Module: /home/deds/projects/OS/build/stage2/c/string.obj(/home/deds/projects/OS/src/bootloader/stage2/string.c)
+00000e0c       strchr_
+00000e67+      strcpy_
+00000edb       strlen_
 Module: /home/deds/projects/OS/build/stage2/c/stdio.obj(/home/deds/projects/OS/src/bootloader/stage2/stdio.c)
-00000054+      putc_
-0000007b       puts_
-000000b2       _printf
-0000030a+      printf_number_
-00000676+      _g_HexChars
+00000f16       putc_
+00000f3d+      puts_
+00000f74+      puts_f_
+00000fb1       _printf
+0000120a+      printf_number_
+0000147e+      print_buffer_
+00001b9e+      _g_HexChars
+Module: /home/deds/projects/OS/build/stage2/c/utility.obj(/home/deds/projects/OS/src/bootloader/stage2/utility.c)
+000014fa+      align_
+Module: /home/deds/projects/OS/build/stage2/c/memory.obj(/home/deds/projects/OS/src/bootloader/stage2/memory.c)
+00001593       memcpy_
+0000160b       memset_
+0000166a       memcmp_
 Module: /home/deds/projects/OS/build/stage2/c/main.obj(/home/deds/projects/OS/src/bootloader/stage2/main.c)
-0000057e       _cstart_
+000016e7       _cstart_
+00001bb4+      _g_data
+Module: /home/deds/projects/OS/build/stage2/c/disk.obj(/home/deds/projects/OS/src/bootloader/stage2/disk.c)
+00001891       DISK_Initialize_
+00001907+      DISK_LBA2CHS_
+000019ba       DISK_ReadSectors_
 
 
                         +---------------------+
@@ -66,18 +104,49 @@ c = initialized communal data
 Module          Segment               Class           Address         Size
 ======          =======               =====           =======         ====
 
-x86.asm         _TEXT                 CODE           00000013         00000041
+x86.asm         _TEXT                 CODE           00000013         0000010f
 main.asm        _ENTRY                CODE           00000000         00000013
+/home/deds/projects/OS/src/bootloader/stage2/ctype.c
+                _TEXT                 CODE           00000122         00000086
+                CONST                 DATA           00001a58         00000000
+                CONST2                DATA           00001b9e         00000000
+                _DATA                 DATA           00001bb0         00000000
+/home/deds/projects/OS/src/bootloader/stage2/fat.c
+                _TEXT                 CODE           000001a8         00000c64
+                CONST                 DATA           00001a58         00000107
+                CONST2                DATA           00001b9e         00000000
+                _DATA                 DATA           00001bb0         00000004
+                _BSS                  BSS            00001bb8         00000008
+/home/deds/projects/OS/src/bootloader/stage2/string.c
+                _TEXT                 CODE           00000e0c         0000010a
+                CONST                 DATA           00001b60         00000000
+                CONST2                DATA           00001b9e         00000000
+                _DATA                 DATA           00001bb4         00000000
 /home/deds/projects/OS/src/bootloader/stage2/stdio.c
-                _TEXT                 CODE           00000054         0000052a
-                CONST                 DATA           000005f8         00000000
-                CONST2                DATA           00000676         00000011
-                _DATA                 DATA           00000688         00000000
+                _TEXT                 CODE           00000f16         000005e4
+                CONST                 DATA           00001b60         00000003
+                CONST2                DATA           00001b9e         00000011
+                _DATA                 DATA           00001bb4         00000000
+/home/deds/projects/OS/src/bootloader/stage2/utility.c
+                _TEXT                 CODE           000014fa         00000099
+                CONST                 DATA           00001b64         00000000
+                CONST2                DATA           00001bb0         00000000
+                _DATA                 DATA           00001bb4         00000000
+/home/deds/projects/OS/src/bootloader/stage2/memory.c
+                _TEXT                 CODE           00001593         00000154
+                CONST                 DATA           00001b64         00000000
+                CONST2                DATA           00001bb0         00000000
+                _DATA                 DATA           00001bb4         00000000
 /home/deds/projects/OS/src/bootloader/stage2/main.c
-                _TEXT                 CODE           0000057e         0000007a
-                CONST                 DATA           000005f8         0000007d
-                CONST2                DATA           00000688         00000000
-                _DATA                 DATA           00000688         00000000
+                _TEXT                 CODE           000016e7         000001aa
+                CONST                 DATA           00001b64         00000039
+                CONST2                DATA           00001bb0         00000000
+                _DATA                 DATA           00001bb4         00000004
+/home/deds/projects/OS/src/bootloader/stage2/disk.c
+                _TEXT                 CODE           00001891         000001c6
+                CONST                 DATA           00001b9e         00000000
+                CONST2                DATA           00001bb0         00000000
+                _DATA                 DATA           00001bb8         00000000
 Warning! W1014: stack segment not found
 
 
@@ -86,6 +155,6 @@ Warning! W1014: stack segment not found
                         +-----------------------+
 
 Stack size:  0200 (512.)
-Memory size:  0688 (1672.)
+Memory size:  1bc0 (7104.)
 Entry point address: 00000000
-Link time: 00:00.20
+Link time: 00:00.40

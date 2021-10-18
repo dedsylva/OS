@@ -4,6 +4,8 @@
 * Create "Hello World" Assembly Code [x]
 * Divide in Bootloader and Kernel [x]
 * Create Bootloader [x]
+* Create subdirectory to FAT driver [x]
+* Go to protected mode [x]
 * Create Kernel []
 * Create Printf []
 

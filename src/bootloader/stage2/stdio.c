@@ -12,6 +12,14 @@ void puts(const char* str){
 	}
 }
 
+void puts_f(const char far* str){
+	while (*str) {
+		putc(*str);
+		str++;
+	}
+}
+
+
 #define PRINTF_STATE_NORMAL       0
 #define PRINTF_STATE_LENGTH       1
 #define PRINTF_STATE_LENGTH_SHORT 2
@@ -206,3 +214,13 @@ int * printf_number(int* argp, int length, bool sign, int radix){
 
 }
 
+void print_buffer(const char* msg, const void far* buffer, uint16_t count){
+	const uint8_t far* u8Buffer = (const uint8_t far*)buffer;
+
+	puts(msg);
+	for (uint16_t i = 0; i < count; i++){
+		putc(g_HexChars[u8Buffer[i] >> 4]);
+		putc(g_HexChars[u8Buffer[i] & 0xF]);
+	}
+	puts("\r\n");
+}
