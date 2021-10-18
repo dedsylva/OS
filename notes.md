@@ -151,7 +151,7 @@ One thing to remember is that <b>the stack pointer is always aligned to the bit 
 #### State Machine Code Logic
 The complete explanation can be found [here](https://www.youtube.com/watch?v=dG8PV6xqm4s&ab_channel=nanobyte&t=427)
 
-![StateMachine](https://github.com/dedsylva/OS/tree/main/images/state_machine.png)
+![StateMachine](https://github.com/dedsylva/OS/blob/main/images/state_machine.png)
 
 ## Documentation
 * https://www.eecg.utoronto.ca/~amza/www.mindsec.com/files/x86regs.html
