@@ -153,5 +153,29 @@ The complete explanation can be found [here](https://www.youtube.com/watch?v=dG8
 
 ![StateMachine](https://github.com/dedsylva/OS/blob/main/images/state_machine.png)
 
-## Documentation
+
+## Protected Mode - 1MB of Memory!
+With the rise of Intel's 80286 AMDS's (and later Athlon 64) processor, we now have <b>privilege levels</b> (aka rings). Now we can decide who gets what access, giving us more safety. The rings are from 0 to 3, with 0 being <b>the kernel's level</b>, i.e., the most privileged one. The kernel decides if it can allows for more memory/hardware allocation. 
+
+Switching from a privileged level to another is not done arbitrarily. For a program to call the kernel to do something, it has to perform a <b>system call</b>. This will make the transition to ring 0, and after the system call finishes, the cpu (or interrupts) makes the switch back to ring 3.
+
+### Goodbye BIOS Interrupts
+Due to the <b>No Free Lunch Theorem</b> (just kidding) we cannot use the BIOS interrupts calls anymore (something we were doing for reading the disk and printing text to the screen). Now we have to write our own drivers.
+
+	
+
+### Segmentation
+Segmentation provides a mechanism for dividing the processor’s <b>linear address space</b> (addressable memory space) into smaller protected address spaces called <b>segments</b>. Segments can be used to hold the code, data, and stack for a program or to hold system data structures. If more than one program/task is running, each can be assigned its own set of segments. The processor enforces the boundaries between these segments and ensures that one program does not interfere with the other. All the segments in a system are contained in the processor’s linear address space. To locate a byte in a particular segment, a logical address (also called a far pointer) must be provided. A logical address consists of a segment selector (unique identifier) and an offset (that will be summed with the base address).
+
+### Paging
+The memory space that can be seen by a program/kernel can be completely remapped by the kernel. Using this feature, programs can be completely isolated from each other, without having the risk of sharing memory. In a last resort, the OS can swap memory in regions of disk that aren't frequently used in case of low physical memory.
+
+
+![Segmentation_and_Paging](https://github.com/dedsylva/OS/blob/main/images/segmentation_and_paging.png)
+Source: [Intel 64 and IA-32 architectures software developer’s manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html)
+
+These two mechanisms (segmentation and paging) can be configured to suppoort single-program (or single-task) systems, or multiple-processor systems that used shared memory. 
+
+## Documentations
 * https://www.eecg.utoronto.ca/~amza/www.mindsec.com/files/x86regs.html
+* https://wiki.osdev.org
