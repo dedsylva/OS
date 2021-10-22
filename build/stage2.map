@@ -1,160 +1,259 @@
-Open Watcom Linker Version 2.0 beta Sep 30 2021 00:24:57 (32-bit)
-Copyright (c) 2002-2021 The Open Watcom Contributors. All Rights Reserved.
-Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       21/10/18 16:46:21
-Executable Image: /home/deds/projects/OS/build/stage2.bin
-creating a RAW Binary Image executable
+Archive member included to satisfy reference by file (symbol)
 
+/home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+                              /home/deds/projects/OS/build/stage2/c/stdio.obj (__udivdi3)
+/home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
+                              /home/deds/projects/OS/build/stage2/c/stdio.obj (__umoddi3)
 
-                        +------------+
-                        |   Groups   |
-                        +------------+
+Memory Configuration
 
-Group                           Address              Size
-=====                           =======              ====
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
 
-DGROUP                          00001a58             00000168
+Linker script and memory map
 
+LOAD /home/deds/projects/OS/build/stage2/asm/x86.obj
+LOAD /home/deds/projects/OS/build/stage2/asm/entry.obj
+LOAD /home/deds/projects/OS/build/stage2/c/ctype.obj
+LOAD /home/deds/projects/OS/build/stage2/c/fat.obj
+LOAD /home/deds/projects/OS/build/stage2/c/string.obj
+LOAD /home/deds/projects/OS/build/stage2/c/stdio.obj
+LOAD /home/deds/projects/OS/build/stage2/c/memory.obj
+LOAD /home/deds/projects/OS/build/stage2/c/main.obj
+LOAD /home/deds/projects/OS/build/stage2/c/disk.obj
+LOAD /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a
+                0x0000000000000500                phys = 0x500
+                0x0000000000000500                . = phys
 
+.entry          0x0000000000000500       0xc0
+                0x0000000000000500                __entry_start = .
+ *(.entry)
+ .entry         0x0000000000000500       0xc0 /home/deds/projects/OS/build/stage2/asm/entry.obj
+                0x0000000000000500                entry
 
-                        +--------------+
-                        |   Segments   |
-                        +--------------+
+.text           0x00000000000005c0     0x1b80
+                0x00000000000005c0                __text_start = .
+ *(.text)
+ .text          0x00000000000005c0      0x1a5 /home/deds/projects/OS/build/stage2/asm/x86.obj
+                0x00000000000005c0                x86_outb
+                0x00000000000005cb                x86_inb
+                0x00000000000005d4                x86_Disk_GetDriveParams
+                0x0000000000000697                x86_Disk_Reset
+                0x00000000000006e7                x86_Disk_Read
+ .text          0x0000000000000765       0x55 /home/deds/projects/OS/build/stage2/c/ctype.obj
+                0x0000000000000765                islower
+                0x000000000000078e                toupper
+ .text          0x00000000000007ba      0xa30 /home/deds/projects/OS/build/stage2/c/fat.obj
+                0x00000000000007ba                FAT_ReadBootSector
+                0x00000000000007d7                FAT_ReadFat
+                0x000000000000080b                FAT_Initialize
+                0x0000000000000a3f                FAT_ClusterToLba
+                0x0000000000000a60                FAT_OpenEntry
+                0x0000000000000c28                FAT_NextCluster
+                0x0000000000000c75                FAT_Read
+                0x0000000000000ec9                FAT_ReadEntry
+                0x0000000000000eea                FAT_Close
+                0x0000000000000f38                FAT_FindFile
+                0x000000000000109d                FAT_Open
+ .text          0x00000000000011ea       0xb6 /home/deds/projects/OS/build/stage2/c/string.obj
+                0x00000000000011ea                strchr
+                0x0000000000001228                strcpy
+                0x000000000000127a                strlen
+ .text          0x00000000000012a0      0x891 /home/deds/projects/OS/build/stage2/c/stdio.obj
+                0x00000000000012a0                putchr
+                0x00000000000012cf                putcolor
+                0x0000000000001301                getchr
+                0x0000000000001323                getcolor
+                0x0000000000001348                setcursor
+                0x00000000000013b9                clrscr
+                0x0000000000001447                scrollback
+                0x0000000000001535                putc
+                0x0000000000001642                puts
+                0x0000000000001671                printf_unsigned
+                0x000000000000172a                printf_signed
+                0x0000000000001787                printf
+                0x0000000000001a98                print_buffer
+ .text          0x0000000000001b31       0xf5 /home/deds/projects/OS/build/stage2/c/memory.obj
+                0x0000000000001b31                memcpy
+                0x0000000000001b83                memset
+                0x0000000000001bc6                memcmp
+ .text          0x0000000000001c26       0xf2 /home/deds/projects/OS/build/stage2/c/main.obj
+                0x0000000000001c26                start
+ .text          0x0000000000001d18      0x199 /home/deds/projects/OS/build/stage2/c/disk.obj
+                0x0000000000001d18                DISK_Initialize
+                0x0000000000001d88                DISK_LBA2CHS
+                0x0000000000001e15                DISK_ReadSectors
+ *fill*         0x0000000000001eb1        0xf 
+ .text          0x0000000000001ec0      0x12a /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+                0x0000000000001ec0                __udivdi3
+ *fill*         0x0000000000001fea        0x6 
+ .text          0x0000000000001ff0      0x150 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
+                0x0000000000001ff0                __umoddi3
 
-Segment                Class          Group          Address         Size
-=======                =====          =====          =======         ====
+.data           0x0000000000002140        0xc
+                0x0000000000002140                __data_start = .
+ *(.data)
+ .data          0x0000000000002140        0x0 /home/deds/projects/OS/build/stage2/c/ctype.obj
+ .data          0x0000000000002140        0x0 /home/deds/projects/OS/build/stage2/c/fat.obj
+ .data          0x0000000000002140        0x0 /home/deds/projects/OS/build/stage2/c/string.obj
+ .data          0x0000000000002140        0x4 /home/deds/projects/OS/build/stage2/c/stdio.obj
+                0x0000000000002140                g_ScreenBuffer
+ .data          0x0000000000002144        0x0 /home/deds/projects/OS/build/stage2/c/memory.obj
+ .data          0x0000000000002144        0x8 /home/deds/projects/OS/build/stage2/c/main.obj
+                0x0000000000002144                KernelLoadBuffer
+                0x0000000000002148                Kernel
+ .data          0x000000000000214c        0x0 /home/deds/projects/OS/build/stage2/c/disk.obj
+ .data          0x000000000000214c        0x0 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+ .data          0x000000000000214c        0x0 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
 
-_ENTRY                 CODE           AUTO           00000000        00000013
-_TEXT                  CODE           AUTO           00000013        00001a44
-CONST                  DATA           DGROUP         00001a58        00000145
-CONST2                 DATA           DGROUP         00001b9e        00000011
-_DATA                  DATA           DGROUP         00001bb0        00000008
-_BSS                   BSS            DGROUP         00001bb8        00000008
+.rodata         0x000000000000214c      0x205
+                0x000000000000214c                __rodata_start = .
+ *(.rodata)
+ .rodata        0x000000000000214c      0x11b /home/deds/projects/OS/build/stage2/c/fat.obj
+ *fill*         0x0000000000002267        0x1 
+ .rodata        0x0000000000002268       0xba /home/deds/projects/OS/build/stage2/c/stdio.obj
+                0x0000000000002268                SCREEN_WIDTH
+                0x000000000000226c                SCREEN_HEIGHT
+                0x0000000000002270                DEFAULT_COLOR
+                0x0000000000002274                g_HexChars
+ .rodata        0x0000000000002322       0x2f /home/deds/projects/OS/build/stage2/c/main.obj
 
+.eh_frame       0x0000000000002354       0xd8
+ .eh_frame      0x0000000000002354       0x64 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+ .eh_frame      0x00000000000023b8       0x74 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
 
-                        +----------------+
-                        |   Memory Map   |
-                        +----------------+
+.bss            0x000000000000242c       0x14
+                0x000000000000242c                __bss_start = .
+ *(.bss)
+ .bss           0x000000000000242c        0x0 /home/deds/projects/OS/build/stage2/c/ctype.obj
+ .bss           0x000000000000242c        0xc /home/deds/projects/OS/build/stage2/c/fat.obj
+ .bss           0x0000000000002438        0x0 /home/deds/projects/OS/build/stage2/c/string.obj
+ .bss           0x0000000000002438        0x8 /home/deds/projects/OS/build/stage2/c/stdio.obj
+                0x0000000000002438                g_ScreenX
+                0x000000000000243c                g_ScreenY
+ .bss           0x0000000000002440        0x0 /home/deds/projects/OS/build/stage2/c/memory.obj
+ .bss           0x0000000000002440        0x0 /home/deds/projects/OS/build/stage2/c/main.obj
+ .bss           0x0000000000002440        0x0 /home/deds/projects/OS/build/stage2/c/disk.obj
+ .bss           0x0000000000002440        0x0 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+ .bss           0x0000000000002440        0x0 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
+                0x0000000000002440                __end = .
+OUTPUT(/home/deds/projects/OS/build/stage2.bin binary)
 
-* = unreferenced symbol
-+ = symbol only referenced locally
+.debug_info     0x0000000000000000     0x1eba
+ .debug_info    0x0000000000000000       0xcb /home/deds/projects/OS/build/stage2/c/ctype.obj
+ .debug_info    0x00000000000000cb      0x9a9 /home/deds/projects/OS/build/stage2/c/fat.obj
+ .debug_info    0x0000000000000a74      0x132 /home/deds/projects/OS/build/stage2/c/string.obj
+ .debug_info    0x0000000000000ba6      0x54d /home/deds/projects/OS/build/stage2/c/stdio.obj
+ .debug_info    0x00000000000010f3      0x1e8 /home/deds/projects/OS/build/stage2/c/memory.obj
+ .debug_info    0x00000000000012db      0x2bf /home/deds/projects/OS/build/stage2/c/main.obj
+ .debug_info    0x000000000000159a      0x2b1 /home/deds/projects/OS/build/stage2/c/disk.obj
+ .debug_info    0x000000000000184b      0x32c /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+ .debug_info    0x0000000000001b77      0x343 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
 
-Address        Symbol
-=======        ======
+.debug_abbrev   0x0000000000000000      0xb9c
+ .debug_abbrev  0x0000000000000000       0x77 /home/deds/projects/OS/build/stage2/c/ctype.obj
+ .debug_abbrev  0x0000000000000077      0x24d /home/deds/projects/OS/build/stage2/c/fat.obj
+ .debug_abbrev  0x00000000000002c4       0xa8 /home/deds/projects/OS/build/stage2/c/string.obj
+ .debug_abbrev  0x000000000000036c      0x1f6 /home/deds/projects/OS/build/stage2/c/stdio.obj
+ .debug_abbrev  0x0000000000000562       0xe2 /home/deds/projects/OS/build/stage2/c/memory.obj
+ .debug_abbrev  0x0000000000000644      0x14c /home/deds/projects/OS/build/stage2/c/main.obj
+ .debug_abbrev  0x0000000000000790      0x140 /home/deds/projects/OS/build/stage2/c/disk.obj
+ .debug_abbrev  0x00000000000008d0      0x15b /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+ .debug_abbrev  0x0000000000000a2b      0x171 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
 
-Module: /home/deds/projects/OS/build/stage2/asm/x86.obj(x86.asm)
-00000013       __U4D
-00000037       __U4M
-00000051       _x86_div64_32
-0000007f       _x86_Video_WriteCharTeletype
-00000092       _x86_Disk_Reset
-000000a7       _x86_Disk_Read
-000000de       _x86_Disk_GetDriveParams
-Module: /home/deds/projects/OS/build/stage2/asm/main.obj(main.asm)
-00000000       entry
-Module: /home/deds/projects/OS/build/stage2/c/ctype.obj(/home/deds/projects/OS/src/bootloader/stage2/ctype.c)
-00000122+      islower_
-00000160       toupper_
-Module: /home/deds/projects/OS/build/stage2/c/fat.obj(/home/deds/projects/OS/src/bootloader/stage2/fat.c)
-000001a8+      FAT_ReadBootSector_
-000001dc+      FAT_ReadFat_
-00000220       FAT_Initialize_
-00000474+      FAT_ClusterToLba_
-000004ca+      FAT_OpenEntry_
-00000694+      FAT_NextCluster_
-0000071d       FAT_Read_
-00000a81       FAT_ReadEntry_
-00000ada       FAT_Close_
-00000b58+      FAT_FindFile_
-00000c92       FAT_Open_
-Module: /home/deds/projects/OS/build/stage2/c/string.obj(/home/deds/projects/OS/src/bootloader/stage2/string.c)
-00000e0c       strchr_
-00000e67+      strcpy_
-00000edb       strlen_
-Module: /home/deds/projects/OS/build/stage2/c/stdio.obj(/home/deds/projects/OS/src/bootloader/stage2/stdio.c)
-00000f16       putc_
-00000f3d+      puts_
-00000f74+      puts_f_
-00000fb1       _printf
-0000120a+      printf_number_
-0000147e+      print_buffer_
-00001b9e+      _g_HexChars
-Module: /home/deds/projects/OS/build/stage2/c/utility.obj(/home/deds/projects/OS/src/bootloader/stage2/utility.c)
-000014fa+      align_
-Module: /home/deds/projects/OS/build/stage2/c/memory.obj(/home/deds/projects/OS/src/bootloader/stage2/memory.c)
-00001593       memcpy_
-0000160b       memset_
-0000166a       memcmp_
-Module: /home/deds/projects/OS/build/stage2/c/main.obj(/home/deds/projects/OS/src/bootloader/stage2/main.c)
-000016e7       _cstart_
-00001bb4+      _g_data
-Module: /home/deds/projects/OS/build/stage2/c/disk.obj(/home/deds/projects/OS/src/bootloader/stage2/disk.c)
-00001891       DISK_Initialize_
-00001907+      DISK_LBA2CHS_
-000019ba       DISK_ReadSectors_
+.debug_aranges  0x0000000000000000      0x120
+ .debug_aranges
+                0x0000000000000000       0x20 /home/deds/projects/OS/build/stage2/c/ctype.obj
+ .debug_aranges
+                0x0000000000000020       0x20 /home/deds/projects/OS/build/stage2/c/fat.obj
+ .debug_aranges
+                0x0000000000000040       0x20 /home/deds/projects/OS/build/stage2/c/string.obj
+ .debug_aranges
+                0x0000000000000060       0x20 /home/deds/projects/OS/build/stage2/c/stdio.obj
+ .debug_aranges
+                0x0000000000000080       0x20 /home/deds/projects/OS/build/stage2/c/memory.obj
+ .debug_aranges
+                0x00000000000000a0       0x20 /home/deds/projects/OS/build/stage2/c/main.obj
+ .debug_aranges
+                0x00000000000000c0       0x20 /home/deds/projects/OS/build/stage2/c/disk.obj
+ .debug_aranges
+                0x00000000000000e0       0x20 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+ .debug_aranges
+                0x0000000000000100       0x20 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
 
+.debug_line     0x0000000000000000      0xf83
+ .debug_line    0x0000000000000000       0x88 /home/deds/projects/OS/build/stage2/c/ctype.obj
+ .debug_line    0x0000000000000088      0x4d7 /home/deds/projects/OS/build/stage2/c/fat.obj
+ .debug_line    0x000000000000055f       0x97 /home/deds/projects/OS/build/stage2/c/string.obj
+ .debug_line    0x00000000000005f6      0x3be /home/deds/projects/OS/build/stage2/c/stdio.obj
+ .debug_line    0x00000000000009b4       0xe8 /home/deds/projects/OS/build/stage2/c/memory.obj
+ .debug_line    0x0000000000000a9c       0xab /home/deds/projects/OS/build/stage2/c/main.obj
+ .debug_line    0x0000000000000b47       0xee /home/deds/projects/OS/build/stage2/c/disk.obj
+ .debug_line    0x0000000000000c35      0x179 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+ .debug_line    0x0000000000000dae      0x1d5 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
 
-                        +---------------------+
-                        |   Module Segments   |
-                        +---------------------+
+.debug_str      0x0000000000000000     0x12a3
+ .debug_str     0x0000000000000000       0xea /home/deds/projects/OS/build/stage2/c/ctype.obj
+ .debug_str     0x00000000000000ea      0x5e8 /home/deds/projects/OS/build/stage2/c/fat.obj
+ .debug_str     0x00000000000006d2       0xf1 /home/deds/projects/OS/build/stage2/c/string.obj
+ .debug_str     0x00000000000007c3      0x24e /home/deds/projects/OS/build/stage2/c/stdio.obj
+ .debug_str     0x0000000000000a11      0x125 /home/deds/projects/OS/build/stage2/c/memory.obj
+ .debug_str     0x0000000000000b36      0x1e2 /home/deds/projects/OS/build/stage2/c/main.obj
+ .debug_str     0x0000000000000d18      0x1c5 /home/deds/projects/OS/build/stage2/c/disk.obj
+ .debug_str     0x0000000000000edd      0x1e3 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+ .debug_str     0x00000000000010c0      0x1e3 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
 
-! = 32-bit segment
-c = initialized communal data
+.debug_line_str
+                0x0000000000000000      0x712
+ .debug_line_str
+                0x0000000000000000       0x72 /home/deds/projects/OS/build/stage2/c/ctype.obj
+ .debug_line_str
+                0x0000000000000072       0xf2 /home/deds/projects/OS/build/stage2/c/fat.obj
+ .debug_line_str
+                0x0000000000000164       0x75 /home/deds/projects/OS/build/stage2/c/string.obj
+ .debug_line_str
+                0x00000000000001d9       0xd8 /home/deds/projects/OS/build/stage2/c/stdio.obj
+ .debug_line_str
+                0x00000000000002b1       0xcc /home/deds/projects/OS/build/stage2/c/memory.obj
+ .debug_line_str
+                0x000000000000037d       0xe4 /home/deds/projects/OS/build/stage2/c/main.obj
+ .debug_line_str
+                0x0000000000000461       0xd3 /home/deds/projects/OS/build/stage2/c/disk.obj
+ .debug_line_str
+                0x0000000000000534       0xef /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+ .debug_line_str
+                0x0000000000000623       0xef /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
 
-Module          Segment               Class           Address         Size
-======          =======               =====           =======         ====
+.comment        0x0000000000000000       0xab
+ .comment       0x0000000000000000       0x13 /home/deds/projects/OS/build/stage2/c/ctype.obj
+ .comment       0x0000000000000013       0x13 /home/deds/projects/OS/build/stage2/c/fat.obj
+ .comment       0x0000000000000026       0x13 /home/deds/projects/OS/build/stage2/c/string.obj
+ .comment       0x0000000000000039       0x13 /home/deds/projects/OS/build/stage2/c/stdio.obj
+ .comment       0x000000000000004c       0x13 /home/deds/projects/OS/build/stage2/c/memory.obj
+ .comment       0x000000000000005f       0x13 /home/deds/projects/OS/build/stage2/c/main.obj
+ .comment       0x0000000000000072       0x13 /home/deds/projects/OS/build/stage2/c/disk.obj
+ .comment       0x0000000000000085       0x13 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+ .comment       0x0000000000000098       0x13 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
 
-x86.asm         _TEXT                 CODE           00000013         0000010f
-main.asm        _ENTRY                CODE           00000000         00000013
-/home/deds/projects/OS/src/bootloader/stage2/ctype.c
-                _TEXT                 CODE           00000122         00000086
-                CONST                 DATA           00001a58         00000000
-                CONST2                DATA           00001b9e         00000000
-                _DATA                 DATA           00001bb0         00000000
-/home/deds/projects/OS/src/bootloader/stage2/fat.c
-                _TEXT                 CODE           000001a8         00000c64
-                CONST                 DATA           00001a58         00000107
-                CONST2                DATA           00001b9e         00000000
-                _DATA                 DATA           00001bb0         00000004
-                _BSS                  BSS            00001bb8         00000008
-/home/deds/projects/OS/src/bootloader/stage2/string.c
-                _TEXT                 CODE           00000e0c         0000010a
-                CONST                 DATA           00001b60         00000000
-                CONST2                DATA           00001b9e         00000000
-                _DATA                 DATA           00001bb4         00000000
-/home/deds/projects/OS/src/bootloader/stage2/stdio.c
-                _TEXT                 CODE           00000f16         000005e4
-                CONST                 DATA           00001b60         00000003
-                CONST2                DATA           00001b9e         00000011
-                _DATA                 DATA           00001bb4         00000000
-/home/deds/projects/OS/src/bootloader/stage2/utility.c
-                _TEXT                 CODE           000014fa         00000099
-                CONST                 DATA           00001b64         00000000
-                CONST2                DATA           00001bb0         00000000
-                _DATA                 DATA           00001bb4         00000000
-/home/deds/projects/OS/src/bootloader/stage2/memory.c
-                _TEXT                 CODE           00001593         00000154
-                CONST                 DATA           00001b64         00000000
-                CONST2                DATA           00001bb0         00000000
-                _DATA                 DATA           00001bb4         00000000
-/home/deds/projects/OS/src/bootloader/stage2/main.c
-                _TEXT                 CODE           000016e7         000001aa
-                CONST                 DATA           00001b64         00000039
-                CONST2                DATA           00001bb0         00000000
-                _DATA                 DATA           00001bb4         00000004
-/home/deds/projects/OS/src/bootloader/stage2/disk.c
-                _TEXT                 CODE           00001891         000001c6
-                CONST                 DATA           00001b9e         00000000
-                CONST2                DATA           00001bb0         00000000
-                _DATA                 DATA           00001bb8         00000000
-Warning! W1014: stack segment not found
+.debug_frame    0x0000000000000000      0x52c
+ .debug_frame   0x0000000000000000       0x54 /home/deds/projects/OS/build/stage2/c/ctype.obj
+ .debug_frame   0x0000000000000054      0x184 /home/deds/projects/OS/build/stage2/c/fat.obj
+ .debug_frame   0x00000000000001d8       0x74 /home/deds/projects/OS/build/stage2/c/string.obj
+ .debug_frame   0x000000000000024c      0x1c0 /home/deds/projects/OS/build/stage2/c/stdio.obj
+ .debug_frame   0x000000000000040c       0x74 /home/deds/projects/OS/build/stage2/c/memory.obj
+ .debug_frame   0x0000000000000480       0x2c /home/deds/projects/OS/build/stage2/c/main.obj
+ .debug_frame   0x00000000000004ac       0x80 /home/deds/projects/OS/build/stage2/c/disk.obj
 
+.debug_loclists
+                0x0000000000000000      0x9a0
+ .debug_loclists
+                0x0000000000000000      0x50b /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+ .debug_loclists
+                0x000000000000050b      0x495 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
 
-                        +-----------------------+
-                        |   Linker Statistics   |
-                        +-----------------------+
-
-Stack size:  0200 (512.)
-Memory size:  1bc0 (7104.)
-Entry point address: 00000000
-Link time: 00:00.40
+.debug_rnglists
+                0x0000000000000000       0x4a
+ .debug_rnglists
+                0x0000000000000000       0x2a /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_udivdi3.o)
+ .debug_rnglists
+                0x000000000000002a       0x20 /home/deds/projects/OS/toolchain/i686-elf/lib/gcc/i686-elf/11.2.0/libgcc.a(_umoddi3.o)
